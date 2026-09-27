@@ -14,15 +14,15 @@ cask "parallexwall" do
 
   app "parallexWall.app"
 
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "#{appdir}/parallexWall.app"],
-                   sudo: false,
-                   print_stderr: false
-  end
-
   zap trash: [
     "~/Library/Application Support/parallexWall",
     "~/Library/Preferences/com.alphastar.parallexWall.plist",
   ]
+
+  caveats do
+    <<~EOS
+      If macOS displays a Gatekeeper warning on first launch, run:
+        xattr -dr com.apple.quarantine "#{appdir}/parallexWall.app"
+    EOS
+  end
 end
